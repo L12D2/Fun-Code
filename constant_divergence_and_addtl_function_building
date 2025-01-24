@@ -1,0 +1,107 @@
+import matplotlib.pyplot as plt
+import numpy as np
+import math as math
+from scipy.integrate import cumulative_trapezoid
+
+# A 
+def funHoHaws_a():
+    z0 = 0  # in meters
+    z = 10000  # z in meters
+    w_z0 = 0  # surface wz = 0m/s
+    div_V = -3e-3 # divergense 1/s
+
+    z_height = np.arange(z0, z, 5) # z axis 
+
+    w_values = w_z0 - div_V * (z_height - z0)
+
+    divergence_list = -w_values / z_height
+    
+    plt.plot(divergence_list, z_height)
+    plt.xlabel("Divergence [1/s]")
+    plt.ylabel("Height [m]")
+    plt.title("i) Vertical Line Graph of Divergence [1/s] (a)", fontweight = "bold")
+    plt.show()
+    
+    plt.plot(w_values, z_height)
+    plt.xlabel("Vertical Motion [m/s]")
+    plt.ylabel("Height [m]")
+    plt.title("ii) Vertical Motion (w) [m/s] of the given Divergence [1/s] (a)", fontweight = "bold")
+    plt.show()
+
+# B
+def funHoHaws_b():
+    z0 = 0  # in meters
+    z = 10000  # z in meters
+    w_z0 = 0  # surface wz = 0m/s
+    div_V = 3e-3 # divergense 1/s
+
+    z_height = np.arange(z0, z, 5) # z axis 
+
+    w_values = w_z0 - div_V * (z_height - z0)
+
+    divergence_list = -w_values / z_height
+    
+    plt.plot(divergence_list, z_height)
+    plt.xlabel("Divergence [1/s]")
+    plt.ylabel("Height [m]")
+    plt.title("i) Vertical Line Graph of Divergence [1/s] (b)", fontweight = "bold")
+    plt.show()
+    
+    plt.plot(w_values, z_height)
+    plt.xlabel("Vertical Motion [m/s]")
+    plt.ylabel("Height [m]")
+    plt.title("ii) Vertical Motion (w) [m/s] of the given Divergence [1/s] (b)", fontweight = "bold")
+    plt.show()
+    
+# C 
+def funHoHaws_c():
+    z0 = 0  # in meters
+    z = 10000  # z in meters
+    w_z0 = 0  # surface wz = 0m/s
+    div_V = 3e-3 # divergense 1/s
+
+    z_height = np.arange(z0, z, 5) # z axis 
+    D = - div_V*np.cos((2*z_height*math.pi) / 10000)
+
+    w_values = w_z0 - cumulative_trapezoid(D, z_height - z0, initial = 0)
+
+    divergence_list = -w_values / z_height
+    
+    plt.plot(D, z_height)
+    plt.xlabel("Divergence [1/s]")
+    plt.ylabel("Height [m]")
+    plt.title("i) Vertical Line Graph of Divergence [1/s] (c)", fontweight = "bold")
+    plt.show()
+    
+    plt.plot(w_values, z_height)
+    plt.xlabel("Vertical Motion [m/s]")
+    plt.ylabel("Height [m]")
+    plt.title("ii) Vertical Motion (w) [m/s] of the given Divergence [1/s] (c)", fontweight = "bold")
+    plt.show()
+
+#D
+def funHoHaws_d():
+    z0 = 0  # in meters
+    z = 10000  # z in meters
+    w_z0 = 0  # surface wz = 0m/s
+    div_V = 3e-3 # divergense 1/s
+
+    z_height = np.arange(z0, z, 5) # z axis 
+    D = - div_V*np.cos((z_height*math.pi) / 10000)
+
+    w_values = w_z0 - cumulative_trapezoid(D, z_height - z0, initial = 0)
+
+    divergence_list = -w_values / z_height
+    
+    plt.plot(D, z_height)
+    plt.xlabel("Divergence [1/s]")
+    plt.ylabel("Height [m]")
+    plt.title("i) Vertical Line Graph of Divergence [1/s] (d)", fontweight = "bold")
+    plt.show()
+    
+    plt.plot(w_values, z_height)
+    plt.xlabel("Vertical Motion [m/s]")
+    plt.ylabel("Height [m]")
+    plt.title("ii) Vertical Motion (w) [m/s] of the given Divergence [1/s] (d)", fontweight = "bold")
+    plt.show() 
+    
