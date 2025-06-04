@@ -1,0 +1,28 @@
+import pandas as pd
+interval_list =[289.15, 298.15, 303.15, 310.15]
+interval_labels=["[289.15-298.15)", "[298.15-303.15)", "[303.15,310.25)"]
+
+df = an.paired['airnow_ufschem_v1'].obj.to_dataframe()
+df2 = df.copy()
+df2["interval_label"] = pd.cut(
+    df2["TEMP"],
+    bins=interval_list,
+    labels=interval_labels,
+    include_lowest=True, 
+    right=False
+)
+
+print(df2.columns)
+df2=df2.reset_index()
+#df2[['TEMP', 'interval_label', 'o3']]
+#df2
+
+import seaborn as sns
+sns.boxplot(data=df2, x="interval_label", y="o3", hue="OZONE")
+
+  # import seaborn as sns
+
+# titanic = sns.load_dataset("titanic")
+
+
+# sns.boxplot(data=titanic, x="class", y="fare", hue="alive")
