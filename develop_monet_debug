@@ -26,3 +26,10 @@ sns.boxplot(data=df2, x="interval_label", y="o3", hue="OZONE")
 
 
 # sns.boxplot(data=titanic, x="class", y="fare", hue="alive")
+
+def wind_dir(vgrd, ugrd):
+    theta=np.arctan(vgrd/ugrd)
+    theta=np.degrees(theta)
+    return theta
+
+
