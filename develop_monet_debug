@@ -31,5 +31,24 @@ def wind_dir(vgrd, ugrd):
     theta=np.arctan(vgrd/ugrd)
     theta=np.degrees(theta)
     return theta
+fig = plt.figure()
+df3 = df.copy()
+df3.reset_index(inplace=True)
 
+#sns.lineplot(data=df3, x="time_local", y='OZONE')
+#sns.lineplot(data=df3, x="time_local", y='TEMP')
+#sns.lineplot(data=df3, x="time_local", y='o3')
+#sns.lineplot(data=df3, x="time_local", y='temperature_k')
+sns.lineplot(data=df3, x="time_local", y='WD')
+
+
+#sns.lineplot(data=df3, x="time_local", y='WS')
+
+#sns.lineplot(data=df3, x="time_local", y='o3')
+sns.lineplot(data=df3, x="time_local", y='winddir')
+
+#plt.plot(df3["time_local"], df3["OZONE"])
+#plt.scatter(df3["time_local"], df3["WD"])
+
+plt.show()
 
