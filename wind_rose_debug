@@ -1,0 +1,217 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# need to conda install windrose. Only PIP installed it. 
+import windrose
+from windrose import WindroseAxes
+
+df = an.paired['airnow_ufschem_v1'].obj.to_dataframe()
+df2=df.copy()
+
+df2.head()
+print(df2.columns)
+#print(df2["winddir"])
+#print(df2.loc[df2["winddir"] > 300])
+
+#print(df2["WD"])
+#print(df2.loc[df2["WD"] > 300])
+
+
+#df2
+
+# entire CONUS
+rect_set1 = [0.3, 0.1, 0.4, 0.8]
+rect_set2 = [0.98, 0.1, 0.4, 0.8]
+colors = plt.cm.plasma
+fig = plt.figure()
+print(len(df))
+df3_obs = df.copy()
+df3_mod = df.copy()
+#df3_obs=df3_obs.dropna(subset = ["WD", "WS", "winddir", "windspeed"], axis = 0) # drop rows where the subset column value has NAN 
+df3_obs=df3_obs.dropna(subset = ["WD", "winddir","OZONE", "o3"], axis = 0)
+print(len(df3_obs))
+#df3_mod=df3_mod.dropna(subset = ["winddir", "windspeed"], axis = 0) # drop rows where the subset column value has NAN . This has to be each time for modeled and observation.  
+#print(len(df3_mod))
+ax1 = WindroseAxes.from_ax(fig = fig,rect=rect_set1)
+ax1.bar(df3_obs.WD, df3_obs.OZONE, normed=True, cmap=colors)
+print(df3_obs.WD.mode()[0])
+ax1.set_xlabel("Observed")
+
+ax2 = WindroseAxes.from_ax(fig = fig, rect=rect_set2)
+ax2.bar(df3_obs.winddir, df3_obs.o3, normed=True, cmap=colors)
+ax2.set_xlabel("Modeled")
+print(df3_obs.winddir.mode()[0])
+
+# set label settings for the two axs
+for ax in [ax1, ax2]:
+    #ax.set_theta_zero_location('E') 
+    #ax.set_theta_direction(-1)
+    #labels = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
+    fontsize = 15
+    ax.set_thetagrids(range(0, 360, 45), 
+                      #labels=labels, 
+                      fontsize=fontsize)
+
+    for label in ax.get_yticklabels():
+        label.set_fontsize(fontsize*0.8)
+
+plt.legend(loc=(1.28, 0.4))
+plt.show()
+
+#print(df3_obs)
+
+def make_rose_plot(df, df_reg=None, column_o=None, label_o=None, column_m=None, 
+               label_m=None,
+               epa_region=None,
+               msa_name=None,
+               pollution_rose = None, 
+               pollutant = None, 
+               outname = 'plot', 
+               domain_type=None, domain_name=None, fig_dict=None, 
+               text_dict=None,debug=False):
+    
+    # need to be put in fig_dict? 
+    rect_set1 = [0.3, 0.1, 0.4, 0.8]
+    rect_set2 = [0.98, 0.1, 0.4, 0.8]
+    colors = plt.cm.plasma
+    fig = plt.figure()
+
+    df_obs=df.copy()
+    df_mod=df.copy()
+    df_obs=df_obs.dropna(subset = ["WD", "WS"], axis = 0) # drop rows where the subset column value has NAN 
+    df_mod=df_mod.dropna(subset = ["winddir", "windspeed"], axis = 0) # drop rows where the subset column value has NAN . This has to be each time for modeled and observation.  
+
+    if epa_region is not None: 
+        region = df[df["epa_region"]=="R9"] # need to make sure this is the yaml option 
+        df_obs = region.copy()
+        df_mod = region.copy()
+        df_obs=df_obs.dropna(subset = ["WD", "WS"], axis = 0) # drop rows where the subset column value has NAN 
+        df_mod=df_mod.dropna(subset = ["winddir", "windspeed"], axis = 0) # drop rows where the subset column value has NAN . This has to be each time for modeled and observation.  
+
+    if msa_name is not None:
+        msa = df[df["msa_name"]==" Sacramento--Arden-Arcade--Roseville, CA "] # need to make sure this is the yaml option
+        df_obs = msa.copy()
+        df_mod = msa.copy()
+        df_obs=df_obs.dropna(subset = ["WD", "WS"], axis = 0) # drop rows where the subset column value has NAN 
+        df_mod=df_mod.dropna(subset = ["winddir", "windspeed"], axis = 0) # drop rows where the subset column value has NAN . This has to be each time for modeled and observation.  
+    # insert a print statement that shows what msa_names are supported if msa_name provided is not valid
+    
+    ax1 = WindroseAxes.from_ax(fig = fig,rect=rect_set1)
+    ax1.bar(df_obs.WD, df_obs.WS, normed=True, cmap=colors)
+    
+    ax2 = WindroseAxes.from_ax(fig = fig, rect=rect_set2)
+    ax2.bar(df_mod.winddir, df_mod.windspeed, normed=True, cmap=colors)
+
+    # add pollution rose documentation eventually. 
+    
+    ax1.set_xlabel("Observed")
+    ax2.set_xlabel("Modeled")
+    plt.legend(loc=(1.28, 0.4))
+    plt.show()
+    
+    print("yes")
+
+# grab a specific region
+df4 = df.copy()
+
+r9 = df4[df4["epa_region"]=="R9"]
+r9_obs = r9.copy()
+r9_obs=r9_obs.dropna(subset = ["WD", "WS", 'winddir', 'windspeed'], axis = 0) # drop rows where the subset column value has NAN 
+#r9_mod=r9_mod.dropna(subset = ["winddir", "windspeed"], axis = 0) # drop rows where the subset column value has NAN . This has to be each time for modeled and observation.  
+
+#print(r9["site"].unique())
+
+fig = plt.figure()
+
+ax1 = WindroseAxes.from_ax(fig = fig,rect=rect_set1)
+ax1.bar(r9_obs.WD, r9_obs.WS, normed=True, cmap=colors)
+ax1.set_xlabel("Observed")
+
+ax2 = WindroseAxes.from_ax(fig = fig, rect=rect_set2)
+ax2.bar(r9_obs.winddir, r9_obs.windspeed, normed=True, cmap=colors)
+ax2.set_xlabel("Modeled")
+
+plt.legend(loc=(1.28, 0.4))
+plt.show()
+
+# grab sepcific site(s)? 
+df5 = df.copy()
+df5 = df5.dropna(subset = ["WD", "WS", "winddir", "windspeed"], axis = 0)
+df_test = df5["site"].unique()
+print(len(df_test))
+print(df_test)
+
+site = df5[df5["site"]=="Livermore - Rincon"]
+#test_site = df5[["site"]].reset_index()
+#print(test_site["site"].unique())
+
+# error for why some sites dont seem to work (e.g. Goose Bay) might have to do with dropping all sites with NA????? 
+#### Fixed to subset by column. Drop the row where that column value is NAN
+#print(df5[["site"]].unique())
+#print(site["site"].unique())
+
+fig = plt.figure()
+
+ax1 = WindroseAxes.from_ax(fig = fig,rect=rect_set1)
+ax1.bar(site.WD, site.WS, normed=True, cmap=colors)
+
+ax2 = WindroseAxes.from_ax(fig = fig, rect=rect_set2)
+ax2.bar(site.winddir, site.windspeed, normed=True, cmap=colors)
+
+plt.legend(loc=(1.28, 0.4))
+plt.show()
+
+# wind rose by MSA
+df6 = df.copy()
+
+df6=df6.dropna(subset = ["WD", "WS", "winddir", "windspeed"], axis = 0)
+df_blah = df6
+print(len(df_blah["msa_name"].unique())) # going to need to remove all the leading and prior spaces.... even if just locally when they msa_name is called. 
+print(df_blah["msa_name"].unique())
+df6 = df6[df6["msa_name"] == " Sacramento--Arden-Arcade--Roseville, CA "]
+#df6
+
+#print(df6[df6["msa_name"]])
+
+#msa = df6[df6["MSA"]=="Livermore - Rincon"]
+
+fig = plt.figure()
+
+ax1 = WindroseAxes.from_ax(fig = fig,rect=rect_set1)
+ax1.bar(df6.WD, df6.WS, normed=True, cmap=colors)
+
+ax2 = WindroseAxes.from_ax(fig = fig, rect=rect_set2)
+ax2.bar(df6.winddir, df6.windspeed, normed=True, cmap=colors)
+
+plt.legend(loc=(1.28, 0.4))
+plt.show()
+
+
+# pollution roses
+rect_set1 = [0.3, 0.1, 0.4, 0.8]
+rect_set2 = [0.98, 0.1, 0.4, 0.8]
+colors = plt.cm.plasma
+fig = plt.figure()
+
+df7 = df[df["msa_name"] == " Sacramento--Arden-Arcade--Roseville, CA "]
+#df7 = df[df["msa_name"] == " Salinas, CA "]
+#df7 = df[df["msa_name"] == " Toledo, OH "]
+
+df7_obs = df7.copy()
+df7_mod = df7.copy()
+df7_obs=df7_obs.dropna(subset = ["WD", "OZONE"], axis = 0) # drop rows where the subset column value has NAN 
+df7_mod=df7_mod.dropna(subset = ["winddir", "o3"], axis = 0) # drop rows where the subset column value has NAN . This has to be each time for modeled and observation.  
+
+ax1 = WindroseAxes.from_ax(fig = fig,rect=rect_set1)
+ax1.bar(df7_obs.WD, df7_obs.OZONE, normed=True, cmap=colors)
+ax1.set_xlabel("Observed")
+
+ax2 = WindroseAxes.from_ax(fig = fig, rect=rect_set2)
+ax2.bar(df7_mod.winddir, df7_mod.o3, normed=True, cmap=colors)
+ax2.set_xlabel("Modeled")
+
+plt.legend(loc=(1.28, 0.4))
+plt.show()
+
