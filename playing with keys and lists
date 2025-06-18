@@ -1,0 +1,34 @@
+test = {'dewpoint': {'specific_hum': 'spfh'}, 'rel_hum': {'specific_hum': 'spfh'}, 'windspeed': {'u_comp': 'ugrd', 'v_comp': 'vgrd'}, 'winddir': {'u_comp': 'ugrd', 'v_comp': 'vgrd'}}
+test
+
+test.keys()
+
+# #test.values()
+# # for keys in test.keys():
+# #     #test["dewpoint"]["specific_hum"] #["spfh"]
+# #     for values in keys:
+# #         print(test[keys][values])
+        
+# #print(var["dewpoint"])
+#     #print([var].items)
+
+# ec_list = set([test["dewpoint"]["specific_hum"], 
+#  test["rel_hum"]["specific_hum"],
+# test["windspeed"]["u_comp"],
+# test["windspeed"]["v_comp"],
+# test["winddir"]["u_comp"],
+# test["windspeed"]["v_comp"]])
+
+# ec_list
+
+
+# lis = []
+#     #print(type(set(test[var].values())))
+# for var in test.keys():
+#     for var2 in test[var].values():
+#         lis.append(var2)
+
+# lis = set(lis)
+# #print(set(lis))    
+# #print(lis)
+# lis
