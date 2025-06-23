@@ -10,6 +10,9 @@ from windrose import WindroseAxes
 df = an.paired['airnow_ufschem_v1'].obj.to_dataframe()
 df2=df.copy()
 
+df = an.paired['airnow_ufschem_v1'].obj.to_dataframe()
+df.columns
+
 df2.head()
 print(df2.columns)
 #print(df2["winddir"])
