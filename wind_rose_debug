@@ -218,3 +218,59 @@ ax2.set_xlabel("Modeled")
 plt.legend(loc=(1.28, 0.4))
 plt.show()
 
+## 06272025 Debugging
+
+import matplotlib.pyplot as plt
+from windrose import WindroseAxes
+import numpy as np
+#plt.plot(df['time_local'], df["wdir"])
+
+# entire CONUS
+rect_set1 = [0.3, 0.1, 0.4, 0.8]
+rect_set2 = [0.98, 0.1, 0.4, 0.8]
+colors = plt.cm.plasma
+fig = plt.figure()
+
+df3_obs = df.copy()
+#df3_obs=df3_obs.dropna(subset = ["WD", "WS", "winddir", "windspeed"], axis = 0) # drop rows where the subset column value has NAN 
+df3_obs=df3_obs.dropna(subset = ["wdir", "winddir","ws", "windspeed"], axis = 0)
+#df3_obs.replace(5.634501576423645e-08, np.nan, inplace=True)
+df3_obs.replace(0, np.nan, inplace=True)
+print(len(df3_obs))
+
+print("new len of df:", df3_obs)
+
+ax1 = WindroseAxes.from_ax(fig = fig,rect=rect_set1)
+ax1.bar(df3_obs.wdir, df3_obs.ws, normed=True, cmap=colors)
+print(df3_obs.wdir.mode()[0])
+ax1.set_xlabel("Observed")
+
+#print(df3_obs.wdir.value_counts().head(10))
+#print(df3_obs.wdir.unique())
+#print(df3_obs.wdir.describe())
+
+ax2 = WindroseAxes.from_ax(fig = fig, rect=rect_set2)
+ax2.bar(df3_obs.winddir, df3_obs.windspeed, normed=True, cmap=colors)
+ax2.set_xlabel("Modeled")
+print(df3_obs.winddir.mode()[0])
+
+# set label settings for the two axs
+for ax in [ax1, ax2]:
+    #ax.set_theta_zero_location('E') 
+    #ax.set_theta_direction(-1)
+    #labels = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
+    fontsize = 15
+    ax.set_thetagrids(range(0, 360, 45), 
+                      #labels=labels, 
+                      fontsize=fontsize)
+
+    for label in ax.get_yticklabels():
+        label.set_fontsize(fontsize*0.8)
+
+plt.legend(loc=(1.28, 0.4))
+plt.show()
+
+df3_obs.wdir.hist(bins=72)
+plt.title("Distribution of wdir")
+plt.show()
+
