@@ -18,3 +18,39 @@
     #     return obj
     # else:
     #     return dpt_np
+
+# def relh(obj, varmap = None, output_key = "rel_hum"):
+#     # grab variable names from the yaml 
+#     pressure_key = varmap["pressure"] if varmap and "pressure" in varmap else "surfpres_pa"
+#     specific_hum_key = varmap["specific_hum"] if varmap and "specific_hum" in varmap else "specific_hum"
+#     temperature_key = varmap["temperature"] if varmap and "pressure" in varmap else "temperature_k"
+
+#     pressure = obj[pressure_key]
+#     specific_hum = obj[specific_hum_key]
+#     temperature = obj[temperature_key]
+
+#     rlh = (metpy.calc.relative_humidity_from_specific_humidity(
+#         pressure * units.Pa,
+#         temperature * units.kelvin, 
+#         specific_hum * units("kg/kg")
+#     )).metpy.convert_units("%")
+
+#     rlh_np = rlh.astype("float64").values
+
+#     # DEBUG
+#     print("pressure dims:", pressure.dims)
+#     print("specific_hum dims:", specific_hum.dims)
+#     print("temperature dims:", temperature.dims, temperature.shape)
+#     print("rlh_np shape:", rlh_np.shape)
+    
+#     # # add this to obj
+#     # if hasattr(obj, "coords") and hasattr(obj, "dims"): 
+#     #     obj[output_key] = (obj[pressure_key].dims, rlh_np)
+#     #     obj[output_key].attrs["units"] = "K"
+#     #     return obj
+#     # elif isinstance(obj, dict):
+#     #     obj[output_key] = rlh_np
+#     #     return obj
+#     # else:
+#     #     return rlh_np
+    
