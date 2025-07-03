@@ -1,0 +1,20 @@
+    # # add this to obj
+    # if hasattr(obj, "coords") and hasattr(obj, "dims"):  
+    #     obj[output_key] = (obj[pressure_key].dims, dpt_np)
+    #     obj[output_key].attrs["units"] = "K"
+    #     return obj
+    # elif isinstance(obj, dict):
+    #     obj[output_key] = dpt_np
+    #     return obj
+    # else:
+    #     return dpt_np
+
+    # if hasattr(obj, "coords") and hasattr(obj, "dims"):
+    #     obj[output_key] = (specific_hum.dims, dpt_np)
+    #     obj[output_key].attrs["units"] = "K"
+    #     return obj
+    # elif isinstance(obj, dict):
+    #     obj[output_key] = dpt_np
+    #     return obj
+    # else:
+    #     return dpt_np
